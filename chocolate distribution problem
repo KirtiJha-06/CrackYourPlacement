@@ -1,0 +1,21 @@
+
+// chocolate distribution problem
+class Solution{
+    public:
+    long long findMinDiff(vector<long long> a, long long n, long long m){
+        
+    //code
+    sort(a.begin(),a.end());
+    int mini = INT_MAX;
+    int i = 0; 
+    int j = m-1;
+    int diff =0;
+    while(j<n){
+        diff = a[j]-a[i];
+        mini = min(diff, mini);
+        i++;
+        j++;
+    }
+    return mini;
+    }   
+};

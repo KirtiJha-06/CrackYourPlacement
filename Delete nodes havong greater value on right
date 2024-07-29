@@ -1,0 +1,40 @@
+class Solution
+{
+    public:
+    Node *reverse(Node*head){
+        Node*prev = NULL;
+        Node*curr = head;
+        Node*frw  = NULL;
+        
+        while(curr!=NULL){
+            frw = curr->next;
+            curr->next = prev;
+        
+    prev = curr;
+    curr = frw;
+    }
+    return prev;
+    }
+    
+    Node *compute(Node *head)
+    {
+        // your code goes here
+        Node*reversed_head = reverse(head);
+        Node*prev = reversed_head;
+        Node*curr = reversed_head->next;
+        while(curr!=NULL)
+        {
+            if(curr->data <prev->data){
+                prev->next = curr->next;
+                curr = curr->next;
+            }
+            else{
+                prev = prev->next;
+                curr = curr->next;
+            }
+        }
+        Node* result = reverse(reversed_head);
+        return result;
+    }
+    
+};

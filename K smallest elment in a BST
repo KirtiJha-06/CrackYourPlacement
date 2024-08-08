@@ -1,0 +1,20 @@
+class Solution {
+    void inorder(TreeNode*node , int& counter , int k, int& ksmallest ){
+        if(!node || counter >k)return;
+        inorder(node->left , counter , k , ksmallest );
+        counter++;
+        if(counter==k){
+            ksmallest = node->val;
+            return;
+        }
+        inorder(node->right , counter , k , ksmallest);
+    }
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        int ksmallest = INT_MIN;
+        int counter =0;
+        inorder(root, counter , k , ksmallest);
+        return ksmallest;
+    }
+    
+};

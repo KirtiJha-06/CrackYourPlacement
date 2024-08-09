@@ -1,0 +1,53 @@
+class Solution{
+  public:
+    bool isNotPresent(Node* root,int x)
+    {
+        if(root)
+        {
+            if(root->data==x)
+                return 0;
+            else if(x<root->data)
+                return isNotPresent(root->left,x);
+            else
+                return isNotPresent(root->right,x);
+        }
+        else 
+            return 1;
+    }
+    void check(Node*root,Node*goc,int Min, int Max, bool &ans)
+    {
+        if(root)
+        {
+            if(!ans&&!root->left&&!root->right)
+            {
+                //check left
+                for(int i = Min+1;i<root->data;i++)
+                {
+                    if(isNotPresent(goc,i))//if return 1:means the current node can be add to the left -> not deadend
+                    {
+                        return;
+                    }
+                }
+                 //check right
+                for(int i = root->data+1;i<Max;i++)
+                {
+                    if(isNotPresent(goc,i))//if return 1: means the current node can be add to the right -> not deadend
+                    {
+                        return;
+                    }
+                }
+                ans = true;//deadend! if node can not be added on both sides
+            }
+            check(root->left,goc,Min,root->data,ans);
+            check(root->right,goc,root->data,Max,ans);
+        }
+    }
+    bool isDeadEnd(Node *root)
+    {
+        if(root->left==NULL&&root->right==NULL)
+            return 0;
+        bool ans = false;
+        check(root,root,0,INT_MAX,ans);
+        return ans;
+    }
+};

@@ -1,0 +1,43 @@
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    
+   static bool comparison(Job a, Job b) {
+        return (a.profit > b.profit);  // Sort jobs in decreasing order of profit
+    }
+
+    vector<int> JobScheduling(Job arr[], int n) {
+        // Step 1: Sort jobs by profit in decreasing order
+        sort(arr, arr + n, comparison);
+
+        // Step 2: Find the maximum deadline
+        int maxDeadline = arr[0].dead;
+        for (int i = 1; i < n; i++) {
+            maxDeadline = max(maxDeadline, arr[i].dead);
+        }
+
+        // Step 3: Create a slot array to keep track of free time slots
+        int slot[maxDeadline + 1];
+        for (int i = 0; i <= maxDeadline; i++)
+            slot[i] = -1;  // Initialize all slots to be free
+
+        // Step 4: Iterate over each job to find a slot
+        int countJobs = 0, jobProfit = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = arr[i].dead; j > 0; j--) {
+                if (slot[j] == -1) {  // If the slot is free
+                    slot[j] = i;      // Assign this job to the slot
+                    countJobs++;      // Increment job count
+                    jobProfit += arr[i].profit;  // Add profit
+                    break;
+                }
+            }
+        }
+
+        // Return the number of jobs done and total profit
+        return {countJobs, jobProfit};
+    }
+
+};

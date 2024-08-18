@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<vector<int>>memo(m+1 , vector<int>(n+1 , 0));
+        int numsZeroes , numsOnes;
+        for(auto& s : strs){
+            numsZeroes = numsOnes =0;
+            for(auto c : s){
+                if(c=='0')
+                numsZeroes++;
+                else if(c == '1')
+                numsOnes++;
+            }
+            for(int i = m ; i>= numsZeroes;i--){
+                for(int j = n ; j>= numsOnes; j--){
+                    memo[i][j] = max(memo[i][j] , memo[i-numsZeroes][j-numsOnes]+1);
+                }
+            }
+        }
+        return memo[m][n];
+    }
+};

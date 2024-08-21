@@ -1,0 +1,48 @@
+class Solution {
+private:
+    // Helper function to detect if there's a cycle in the graph starting from 'vertex'
+    bool isCycle(vector<vector<int>>& g, int vertex, vector<bool> &visited, vector<bool> &inRecursion) {
+        // If vertex is already in the recursion stack, a cycle is found
+        if(inRecursion[vertex]) return true;
+
+        // If vertex is already visited and not in the recursion stack, no cycle
+        if(visited[vertex]) return false;
+
+        // Mark vertex as visited and add it to the recursion stack
+        visited[vertex] = true;
+        inRecursion[vertex] = true;
+
+        // Explore all adjacent nodes (children)
+        for(int &child : g[vertex]) {
+            // Recursively check for cycles
+            if(isCycle(g, child, visited, inRecursion)) return true;
+        }
+
+        // Remove vertex from recursion stack as we backtrack
+        inRecursion[vertex] = false;
+        return false;
+    }
+
+public:
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int n = graph.size();  // Number of vertices in the graph
+
+        vector<bool> visited(n, false);    // Keeps track of visited nodes
+        vector<bool> inRecursion(n, false); // Keeps track of nodes in the current recursion stack
+
+        // Check for cycles starting from each node
+        for (int i = 0; i < n; i++) {
+            if(!visited[i]){
+                isCycle(graph, i, visited, inRecursion);
+            }
+        }
+
+        // Collect all nodes that are not part of any cycle (i.e., safe nodes)
+        vector<int> ans;
+        for (int i = 0; i < n; i++) {
+            if(inRecursion[i] == false) ans.push_back(i);
+        }
+        
+        return ans; // Return the list of safe nodes
+    }
+};
